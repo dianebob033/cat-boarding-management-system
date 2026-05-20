@@ -58,6 +58,7 @@ Text file I/O
 ## LO9
 Recursion
 
+Note: I worked on this project locally in Eclipse, but I did not correctly submit weekly Canvas snapshots or push weekly GitHub commits. This section summarizes the development stages of my project.
 # Weekly Development Progress
 
 ## Week 1 — Proposal and Design
