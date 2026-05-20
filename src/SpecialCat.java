@@ -4,11 +4,18 @@ import java.time.LocalTime;
 /**
  * Lead Author(s): Jiaqi Zhang
  * 
+ * References:
+ * Morelli, R., & Walde, R. (2016). Java, Java, Java:
+ * Object-Oriented Problem Solving.
+ * Retrieved from:
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * Oracle Java Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/
+ * 
  * Responsibilities of class:
  * The SpecialCat class represents a cat with special care needs.
  * 
- * 中文说明：
- * SpecialCat 是 Cat 的子类，用来表示需要特殊护理的猫咪。
  */
 public class SpecialCat extends Cat
 {
@@ -26,6 +33,7 @@ public class SpecialCat extends Cat
 	@Override
 	public String getCategory()
 	{
+		// long stay + special care = both categories
 		if (getBoardingDays() >= 14)
 		{
 			return "Special Care + Long Stay Cat";
@@ -36,13 +44,15 @@ public class SpecialCat extends Cat
 	@Override
 	public void feed()
 	{
-		System.out.println(getName() + " needs special feeding instructions: "
-				+ medicalNote);
+		// just reuse getFeedMessage() to avoid writing the same string twice
+		System.out.println(getFeedMessage());
 	}
 
 	@Override
 	public String getFeedMessage()
 	{
+		// same as feed() but returns string instead of printing
+		// (interface requires this method)
 		return getName() + " needs special feeding instructions: "
 				+ medicalNote;
 	}

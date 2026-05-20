@@ -8,15 +8,21 @@ import java.time.LocalTime;
 /**
  * Lead Author(s): Jiaqi Zhang
  * 
+ * References:
+ * Morelli, R., & Walde, R. (2016). Java, Java, Java:
+ * Object-Oriented Problem Solving.
+ * Retrieved from:
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * Oracle Java Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/
+ * 
  * Responsibilities of class:
  * The CatBoardingGUI class creates the graphical user interface
- * 
- * 中文说明：
- * 这个类负责创建猫咪寄养系统的图形界面，并处理按钮点击事件。
  */
 public class CatBoardingGUI extends JFrame
 {
-	private BoardingManager manager;
+	private BoardingManager bm;
 
 	private JTextField nameField;
 	private JTextField birthDateField;
@@ -45,15 +51,22 @@ public class CatBoardingGUI extends JFrame
 
 	public CatBoardingGUI()
 	{
-		manager = new BoardingManager();
+		// I use one BoardingManager object here because the GUI should not
+		// store cat data directly.
+		// The manager keeps the data logic separate from the screen.
+		bm = new BoardingManager();
 
 		setTitle("Cat Boarding Management System");
 		setSize(1000, 1200);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout(15, 15));
-
+		setContentPane(new BackgroundPanel());
+		// BorderLayout helps separate the title, main form, and output area.
+		getContentPane().setLayout(new BorderLayout(15, 15));
+		
 		try
 		{
+			// I use Nimbus because the default Java Swing style looks old.
+			// This makes the project easier to read when I demo it.
 			UIManager.setLookAndFeel(
 					"javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		}
@@ -67,14 +80,12 @@ public class CatBoardingGUI extends JFrame
 		createOutputPanel();
 		addEventHandlers();
 
-		getContentPane().setBackground(new Color(245, 247, 250));
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 	/**
 	 * Creates the title area.
-	 * 创建标题区域。
 	 */
 	private void createTitlePanel()
 	{
@@ -91,7 +102,7 @@ public class CatBoardingGUI extends JFrame
 		subtitleLabel.setForeground(new Color(100, 116, 139));
 
 		JPanel titlePanel = new JPanel(new GridLayout(2, 1));
-		titlePanel.setBackground(new Color(245, 247, 250));
+		titlePanel.setOpaque(false);
 		titlePanel.add(titleLabel);
 		titlePanel.add(subtitleLabel);
 
@@ -100,19 +111,18 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Creates the main input and action area.
-	 * 创建主要输入和按钮区域。
 	 */
 	private void createMainPanel()
 	{
 		JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-		mainPanel.setBackground(new Color(245, 247, 250));
+		mainPanel.setOpaque(false);
 
 		JPanel inputPanel = createInputPanel();
 		JPanel actionPanel = createActionPanel();
 
 		JPanel leftPanel = new JPanel(new BorderLayout(10, 10));
-		leftPanel.setBackground(new Color(245, 247, 250));
+		leftPanel.setOpaque(false);
 		leftPanel.add(inputPanel, BorderLayout.CENTER);
 		leftPanel.add(createSmartImportPanel(), BorderLayout.SOUTH);
 
@@ -124,12 +134,11 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Creates input fields.
-	 * 创建输入框。
 	 */
 	private JPanel createInputPanel()
 	{
 		JPanel panel = new JPanel(new GridBagLayout());
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(new Color(255, 255, 255, 180));
 		panel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(new Color(226, 232, 240)),
 				BorderFactory.createEmptyBorder(15, 15, 15, 15)));
@@ -138,8 +147,13 @@ public class CatBoardingGUI extends JFrame
 		gbc.insets = new Insets(7, 7, 7, 7);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
+		// JTextField lets the user type simple text information.
 		nameField = new JTextField(18);
+
+		// These default values show the format the user should follow.
+		// It also makes testing faster during the demo.
 		birthDateField = new JTextField("2022-05-01", 18);
+		// Example times make testing faster and reduce input mistakes.
 		dropOffTimeField = new JTextField("10:00", 18);
 		pickUpTimeField = new JTextField("17:00", 18);
 		ownerField = new JTextField(18);
@@ -167,7 +181,8 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Helper method for adding one row of label and text field.
-	 * 辅助方法：添加一行标签和输入框。
+	 * This helper method keeps the GUI layout code shorter and cleaner.
+	 * It also makes the rows look more consistent.
 	 */
 	private void addRow(JPanel panel, GridBagConstraints gbc, int row,
 			String labelText, JTextField field)
@@ -179,20 +194,22 @@ public class CatBoardingGUI extends JFrame
 		field.setFont(new Font("Arial", Font.PLAIN, 13));
 		field.setPreferredSize(new Dimension(230, 32));
 
+		// GridBagLayout allows labels and fields to stay aligned neatly.
 		gbc.gridx = 0;
 		gbc.gridy = row;
 		gbc.weightx = 0.2;
+		// Labels are placed in column 0.
 		panel.add(label, gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = row;
 		gbc.weightx = 0.8;
+		// Text fields are placed in column 1.
 		panel.add(field, gbc);
 	}
 
 	/**
 	 * Creates action buttons.
-	 * 创建按钮区域。
 	 */
 	private JPanel createActionPanel()
 	{
@@ -202,6 +219,7 @@ public class CatBoardingGUI extends JFrame
 				BorderFactory.createLineBorder(new Color(226, 232, 240)),
 				BorderFactory.createEmptyBorder(15, 15, 15, 15)));
 
+		// All buttons use the same style so the GUI looks more organized.
 		addButton = createStyledButton("Add Cat");
 		removeButton = createStyledButton("Remove Cat");
 		searchButton = createStyledButton("Search Cat");
@@ -223,7 +241,6 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Creates a styled button.
-	 * 创建统一风格的按钮。
 	 */
 	private JButton createStyledButton(String text)
 	{
@@ -236,7 +253,9 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Creates smart import area.
-	 * 创建智能导入区域。
+	 * Smart Fill is separate from Add Cat because the user should review the
+	 * fields first.
+	 * This avoids adding wrong data automatically.
 	 */
 	private JPanel createSmartImportPanel()
 	{
@@ -244,6 +263,8 @@ public class CatBoardingGUI extends JFrame
 		panel.setBackground(Color.WHITE);
 		panel.setBorder(BorderFactory.createTitledBorder("Smart Import"));
 
+		// Smart Fill allows users to paste raw text instead of typing
+		// every field one by one.
 		smartImportArea = new JTextArea(5, 30);
 		smartImportArea.setLineWrap(true);
 		smartImportArea.setWrapStyleWord(true);
@@ -258,10 +279,10 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Creates output area.
-	 * 创建输出区域。
 	 */
 	private void createOutputPanel()
 	{
+		// I use a JTextArea because the program may display a lot of results.
 		outputArea = new JTextArea(6, 60);
 		outputArea.setEditable(false);
 		outputArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
@@ -278,10 +299,10 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Adds event handlers to buttons.
-	 * 给按钮添加事件监听。
 	 */
 	private void addEventHandlers()
 	{
+		// connecting buttons to what they actually do
 		addButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -310,7 +331,7 @@ public class CatBoardingGUI extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				outputArea.setText(manager.getAllCatsAsString());
+				outputArea.setText(bm.getAllCatsAsString());
 			}
 		});
 
@@ -350,13 +371,14 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Handles adding a cat.
-	 * 处理添加猫。
 	 */
 	private void handleAddCat()
 	{
 		try
 		{
+			// The GUI reads text from the input fields before creating objects.
 			String name = nameField.getText().trim();
+			// The text dates are converted into LocalDate objects.
 			LocalDate birthDate = LocalDate
 					.parse(birthDateField.getText().trim());
 			LocalTime dropOffTime = LocalTime
@@ -372,6 +394,7 @@ public class CatBoardingGUI extends JFrame
 					.parse(startDateField.getText().trim());
 			LocalDate endDate = LocalDate.parse(endDateField.getText().trim());
 
+			// Important fields should not be empty.
 			if (name.isEmpty() || ownerName.isEmpty())
 			{
 				outputArea.setText(
@@ -379,6 +402,7 @@ public class CatBoardingGUI extends JFrame
 				return;
 			}
 
+			// End date should not happen before the start date.
 			if (endDate.isBefore(startDate))
 			{
 				outputArea.setText(
@@ -389,6 +413,7 @@ public class CatBoardingGUI extends JFrame
 			Owner owner = new Owner(ownerName, phone);
 			Cat cat;
 
+			// Regular cats are created when there are no medical notes.
 			if (medicalNotes.isEmpty())
 			{
 
@@ -396,6 +421,7 @@ public class CatBoardingGUI extends JFrame
 						endDate, dropOffTime, pickUpTime);
 
 			}
+			// Cats with medical notes become SpecialCat objects.
 			else
 			{
 
@@ -404,15 +430,17 @@ public class CatBoardingGUI extends JFrame
 						medicalNotes);
 			}
 
-			manager.addCat(cat);
+			// The new object is added to the main cat list.
+			bm.addCat(cat);
 
 			outputArea.setText("Cat added successfully.\n");
 			outputArea.append("Auto Category: " + cat.getCategory() + "\n\n");
-			outputArea.append(manager.getAllCatsAsString());
+			outputArea.append(bm.getAllCatsAsString());
 
 			clearInputOnly();
 
 		}
+		// Invalid date or time input should not crash the GUI.
 		catch (Exception e)
 		{
 
@@ -423,7 +451,6 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Handles removing a cat.
-	 * 处理删除猫。
 	 */
 	private void handleRemoveCat()
 	{
@@ -434,7 +461,7 @@ public class CatBoardingGUI extends JFrame
 			name = searchField.getText().trim();
 		}
 
-		boolean removed = manager.removeCat(name);
+		boolean removed = bm.removeCat(name);
 
 		if (removed)
 		{
@@ -445,12 +472,11 @@ public class CatBoardingGUI extends JFrame
 			outputArea.setText("Cat not found.\n\n");
 		}
 
-		outputArea.append(manager.getAllCatsAsString());
+		outputArea.append(bm.getAllCatsAsString());
 	}
 
 	/**
 	 * Handles searching for a cat.
-	 * 处理查询猫。
 	 */
 	private void handleSearchCat()
 	{
@@ -461,7 +487,8 @@ public class CatBoardingGUI extends JFrame
 			name = nameField.getText().trim();
 		}
 
-		Cat foundCat = manager.recursiveSearchByName(name);
+		// The recursive search method is used here to demonstrate LO9.
+		Cat foundCat = bm.recursiveSearchByName(name);
 
 		if (foundCat != null)
 		{
@@ -476,26 +503,23 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Handles saving file.
-	 * 处理保存文件。
 	 */
 	private void handleSave()
 	{
-		manager.saveToFile("cats.txt");
+		bm.saveToFile("cats.txt");
 		outputArea.setText("Cat data saved to cats.txt");
 	}
 
 	/**
 	 * Handles loading file.
-	 * 处理读取文件。
 	 */
 	private void handleLoad()
 	{
-		outputArea.setText(manager.loadFromFile("cats.txt"));
+		outputArea.setText(bm.loadFromFile("cats.txt"));
 	}
 
 	/**
 	 * Clears all fields.
-	 * 清空所有输入框和搜索框。
 	 */
 	private void clearFields()
 	{
@@ -505,7 +529,6 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Handles Smart Fill button.
-	 * 处理智能填入按钮。
 	 */
 	private void handleSmartFill()
 	{
@@ -570,10 +593,11 @@ public class CatBoardingGUI extends JFrame
 
 	/**
 	 * Clears only input fields.
-	 * 只清空猫咪信息输入框。
+	 * This method resets the form so the next cat can be entered more easily.
 	 */
 	private void clearInputOnly()
 	{
+		// Reset the form to default example values for the next cat.
 		nameField.setText("");
 		birthDateField.setText("2022-05-01");
 		dropOffTimeField.setText("10:00");

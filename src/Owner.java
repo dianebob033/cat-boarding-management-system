@@ -1,6 +1,15 @@
 /**
  * Lead Author(s): Jiaqi Zhang
  * 
+ * References:
+ * Morelli, R., & Walde, R. (2016). Java, Java, Java:
+ * Object-Oriented Problem Solving.
+ * Retrieved from:
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * Oracle Java Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/ *
+ * 
  * Responsibilities of class:
  * The Owner class stores information about the owner of a cat,
  * including the owner's name and phone number.
@@ -50,6 +59,7 @@ public class Owner
 	@Override
 	public String toString()
 	{
+		// format: "Name (123-456-7890)" - easier to read in GUI list
 		return name + " (" + phoneNumber + ")";
 	}
 }

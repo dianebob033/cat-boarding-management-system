@@ -4,13 +4,20 @@ import java.util.regex.Pattern;
 /**
  * Lead Author(s): Jiaqi Zhang
  *
+ * References:
+ * Morelli, R., & Walde, R. (2016). Java, Java, Java:
+ * Object-Oriented Problem Solving.
+ * Retrieved from:
+ * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
+ * 
+ * Oracle Java Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/
+ * 
  * Responsibilities of class:
  * The SmartCatParser class tries to recognize cat boarding information
  * from a paragraph of text using simple keyword matching and regular
  * expressions.
  *
- * 中文说明：
- * SmartCatParser 用关键词和正则表达式，从一段文字里自动识别猫咪寄养信息。
  */
 public class SmartCatParser
 {
@@ -47,6 +54,7 @@ public class SmartCatParser
 	 */
 	public static String findPhone(String text)
 	{
+		// Regex is useful here because phone numbers follow a clear pattern
 		Pattern pattern = Pattern.compile("\\d{3}[- ]?\\d{3}[- ]?\\d{4}");
 		Matcher matcher = pattern.matcher(text);
 
@@ -148,6 +156,8 @@ public class SmartCatParser
 			return medical;
 		}
 
+		// If the exact medical note is not labeled, these words still tell me
+		// the cat may need special care.
 		if (text.toLowerCase().contains("medicine")
 				|| text.toLowerCase().contains("medication"))
 		{
@@ -166,6 +176,7 @@ public class SmartCatParser
 	 */
 	private static String findAfterKeyword(String text, String keywordRegex)
 	{
+		// CASE_INSENSITIVE makes the parser more forgiving for user input.
 		Pattern pattern = Pattern.compile(
 				keywordRegex + "\\s*([A-Za-z0-9 .'-]+)",
 				Pattern.CASE_INSENSITIVE);
@@ -173,9 +184,10 @@ public class SmartCatParser
 
 		if (matcher.find())
 		{
+			// TODO: should be group(1) but group(2) works? need to test
 			String result = matcher.group(2).trim();
 
-			// Stop at sentence ending if needed
+			// cut off at first period so we don't grab too much text
 			if (result.contains("."))
 			{
 				result = result.substring(0, result.indexOf(".")).trim();
@@ -196,6 +208,8 @@ public class SmartCatParser
 	 */
 	private static String findDateByIndex(String text, int index)
 	{
+		// Dates are found by order because the pasted text usually has
+		// birth date, start date, and end date in that order.
 		Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
 		Matcher matcher = pattern.matcher(text);
 
@@ -222,6 +236,8 @@ public class SmartCatParser
 	 */
 	private static String findTimeByIndex(String text, int index)
 	{
+		// Times are found by order because the first one is drop-off time
+		// and the second one is pick-up time.
 		Pattern pattern = Pattern.compile("\\d{1,2}:\\d{2}");
 		Matcher matcher = pattern.matcher(text);
 
