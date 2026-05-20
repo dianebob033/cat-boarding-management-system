@@ -1,184 +1,66 @@
 # Weekly Development Progress
 
----
+## Week 1 — Proposal and Design
 
-## Week 1 — Project Proposal and Object-Oriented Design
+This week, I planned the main idea for my project. I chose a cat boarding management system because it connects to a real situation and gives me a clear reason to build the program.
 
-- Created the project proposal page
-- Planned the Smart Cat Boarding Management System
-- Created CRC cards
-- Created UML diagram
-- Designed object-oriented relationships
-- Planned GUI layout mock-up
-- Planned how each LO would appear in the project
-- Recorded Object-Oriented Design explanation video
+I created the first version of the GUI mock-up, CRC cards, and UML diagram. I also planned the main classes, including Cat, Owner, SpecialCat, BoardingManager, CatBoardingGUI, and Feedable.
 
-中文：
-
-- 创建项目 proposal 页面
-- 规划猫咪寄养管理系统
-- 创建 CRC cards
-- 创建 UML 图
-- 设计面向对象关系
-- 规划 GUI 草图
-- 规划各个 LO 的实现方式
-- 录制面向对象设计视频
 
 ---
 
-## Week 2 — Core Model Classes
+## Week 2 — Basic Model Classes
 
-- Created Owner class
-- Created Cat class
-- Created SpecialCat subclass
-- Added constructors and getter methods
-- Added aggregation relationship between Cat and Owner
-- Tested constructors and object behaviors
-- Added bilingual comments and Javadocs
+This week, I started writing the model classes. I worked on Owner, Cat, and SpecialCat first because these classes store the main information for the system.
 
-中文：
+I also tested constructors, getter methods, and toString methods. At this stage, the program was still simple, but it helped me make sure the basic object relationships worked.
 
-- 创建 Owner 类
-- 创建 Cat 类
-- 创建 SpecialCat 子类
-- 添加构造方法与 getter
-- 实现 Cat 与 Owner 的 aggregation
-- 测试对象行为
-- 添加中英双语注释
 
 ---
 
-## Week 3 — Collections and File System Planning
+## Week 3 — Manager Class and File Planning
 
-- Created BoardingManager class
-- Added ArrayList<Cat> collection
-- Added add/remove/search methods
-- Planned file saving and loading system
-- Planned exception handling structure
-- Tested collection management behavior
+This week, I worked on the BoardingManager class. I used an ArrayList to store multiple Cat objects and added methods to add, remove, and display cats.
 
-中文：
+I also started planning file saving and loading. I had to think about where file I/O should belong in the design, and I decided to keep it in BoardingManager because that class manages the cat data.
 
-- 创建 BoardingManager 类
-- 使用 ArrayList<Cat>
-- 添加增加、删除、搜索功能
-- 规划文件保存与读取
-- 规划异常处理结构
-- 测试集合管理功能
 
 ---
 
-## Week 4 — Testing and Design Improvements
+## Week 4 — Testing and Debugging
 
-- Tested model classes
-- Debugged logic and relationship issues
-- Improved class responsibilities
-- Improved object-oriented structure
-- Updated project design decisions
-- Continued testing and debugging
+This week, I focused on testing the model classes and fixing logic issues. I checked whether cats could be added and removed correctly, and I also reviewed the relationships between the classes.
 
-中文：
+I made small design changes after testing, especially around how the manager class should organize the cat list.
 
-- 测试 model classes
-- 修复逻辑问题
-- 改进类职责
-- 优化面向对象结构
-- 更新设计方案
-- 持续调试与测试
 
 ---
 
-## Week 5 — GUI Layout Development
+## Week 5 — GUI Layout
 
-- Built Java Swing GUI layout
-- Added labels and text fields
-- Added buttons and output area
-- Created multiple GUI panels
-- Designed GUI appearance and layout
-- Connected GUI visually to project structure
+This week, I started building the GUI with Java Swing. I added labels, text fields, buttons, and an output area.
 
-中文：
+At this point, the GUI was mostly about layout. The buttons did not do everything yet, but the visual structure helped me see how the user would interact with the program.
 
-- 创建 Java Swing GUI
-- 添加标签与输入框
-- 添加按钮与输出区域
-- 创建多个 GUI panel
-- 设计 GUI 外观
-- 将 GUI 与项目结构对应
 
 ---
 
-## Week 6 — Functional GUI and Smart Features
+## Week 6 — Functional GUI
 
-- Added ActionListeners
-- Connected GUI buttons to program logic
-- Implemented Add Cat and Remove Cat features
-- Implemented Save and Load features
-- Added Smart Fill automatic parser
-- Added automatic category classification
-- Added long-stay detection
-- Improved GUI usability and design
+This week, I connected the GUI buttons to the program logic. The Add Cat, Remove Cat, Search Cat, Save File, and Load File buttons became functional.
 
-中文：
+I also added Smart Fill, which uses keyword matching and regular expressions to fill in cat information from pasted text. This was one of the harder parts because the text input could vary.
 
-- 添加事件监听器
-- 将 GUI 与逻辑连接
-- 实现 Add Cat 和 Remove Cat
-- 实现 Save 与 Load
-- 添加 Smart Fill 智能录入
-- 添加自动分类
-- 添加长期寄养识别
-- 优化 GUI 易用性
 
 ---
 
-## Week 7 — Advanced Features and Final Polishing
+## Week 7 — Advanced Features and Final Testing
 
-- Added recursive search functionality
-- Added multidimensional boarding calendar array
-- Added automatic backup functionality
-- Added exception handling for invalid input
-- Improved file I/O system
-- Improved formatting and user experience
-- Added bilingual comments throughout the project
-- Performed final debugging and testing
-- Updated GitHub repository regularly
+This week, I added the final advanced features. I added recursive search for cats by name and a two-dimensional array to represent a simple boarding calendar.
 
-中文：
+I also added automatic backup when saving files and continued testing the GUI. Most of the work this week was debugging small problems and making the project more stable.
 
-- 添加递归搜索
-- 添加二维数组寄养日历
-- 添加自动备份功能
-- 添加输入异常处理
-- 改进文件读写系统
-- 优化界面与用户体验
-- 添加中英双语注释
-- 最终调试与测试
-- 持续更新 GitHub
-
----
-
-## Week 8 — Final Review and Submission
-
-- Final debugging
-- Final project testing
-- README improvements
-- Final LO review
-- Final video recording
-- Final GitHub submission
-- Canvas final submission
-
-中文：
-
-- 最终调试
-- 最终测试
-- 完善 README
-- 最终 LO 检查
-- 录制最终视频
-- 最终 GitHub 提交
-- Canvas 最终提交
-
-
+------------------------------------------------
   # cat-boarding-management-system
 Java GUI project for managing cat boarding
 ------------------------------------------------
