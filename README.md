@@ -31,32 +31,52 @@ The project demonstrates object-oriented programming concepts including inherita
 
 # LO Coverage
 
-## LO1
-Object-Oriented Design
+### LO1 - Object-Oriented Design
+This project uses separate classes with clear responsibilities:
+- Cat stores cat boarding information.
+- Owner stores owner contact information.
+- BoardingManager manages the cat list, calendar, search, save, and load.
+- CatBoardingGUI handles the user interface.
+- SmartCatParser handles automatic text parsing.
 
-## LO2
-Arrays and multidimensional arrays
+### LO2 - Arrays and Multidimensional Arrays
+BoardingManager uses a 2D String array:
+- `private String[][] boardingCalendar;`
+- `assignCatToCalendar(String catName, int day, int room)`
 
-## LO3
-Classes and aggregation
+### LO3 - Classes and Aggregation
+Cat has-a Owner:
+- `private Owner owner;`
 
-## LO4
-Inheritance, interfaces, and polymorphism
+### LO4 - Inheritance, Interfaces, and Polymorphism
+- Cat implements Feedable.
+- SpecialCat extends Cat.
+- SpecialCat overrides `getCategory()`, `feed()`, and `getFeedMessage()`.
+- SpecialCat objects can also be stored as Cat objects in `ArrayList<Cat>`.
 
-## LO5
-Generic collections using ArrayList
+### LO5 - Generic Collections
+BoardingManager uses:
+- `private ArrayList<Cat> catList;`
 
-## LO6
-GUI and event-driven programming
+### LO6 - GUI and Event-Driven Programming
+CatBoardingGUI uses Swing components:
+- JFrame, JPanel, JLabel, JTextField, JTextArea, JButton
+- Button ActionListeners call methods such as `handleAddCat()`, `handleSearchCat()`, `handleSave()`, and `handleLoad()`.
 
-## LO7
-Exception handling
+### LO7 - Exception Handling
+- The GUI catches invalid date/time input in `handleAddCat()`.
+- BoardingManager catches IOException in `saveToFile()` and `loadFromFile()`.
 
-## LO8
-Text file I/O
+### LO8 - Text File I/O
+BoardingManager uses:
+- FileWriter in `saveToFile()`
+- Scanner in `loadFromFile()`
+- Automatic backup in `saveBackupFile()`
 
-## LO9
-Recursion
+### LO9 - Recursion
+BoardingManager uses recursive search:
+- `recursiveSearchByName(String name)`
+- Private helper `recursiveSearchByName(String name, int index)`
 
 Note: I worked on this project locally in Eclipse, but I did not correctly submit weekly Canvas snapshots or push weekly GitHub commits. This section summarizes the development stages of my project.
 # Weekly Development Progress
