@@ -1,3 +1,63 @@
+## Overview
+
+The Smart Cat Boarding Management System is a Java Swing application designed to help manage cat boarding information through a graphical user interface.
+
+The project demonstrates object-oriented programming concepts including inheritance, interfaces, collections, arrays, recursion, exception handling, and file I/O.
+
+# Features
+
+- Add cats
+- Remove cats
+- Search cats
+- Smart Fill automatic parser
+- Automatic category classification
+- Recursive search
+- File save/load
+- Automatic backup file
+- Boarding calendar using 2D arrays
+- GUI event handling
+
+  # Technologies Used
+
+- Java
+- Java Swing
+- ArrayList
+- Multidimensional Arrays
+- Recursion
+- File I/O
+- Exception Handling
+
+---
+
+# LO Coverage
+
+## LO1
+Object-Oriented Design
+
+## LO2
+Arrays and multidimensional arrays
+
+## LO3
+Classes and aggregation
+
+## LO4
+Inheritance, interfaces, and polymorphism
+
+## LO5
+Generic collections using ArrayList
+
+## LO6
+GUI and event-driven programming
+
+## LO7
+Exception handling
+
+## LO8
+Text file I/O
+
+## LO9
+Recursion
+
 # Weekly Development Progress
 
 ## Week 1 — Proposal and Design
