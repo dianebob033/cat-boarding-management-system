@@ -3,13 +3,12 @@
  * 
  * Responsibilities of interface:
  * The Feedable interface represents objects that can be fed.
- * It helps demonstrate abstraction and polymorphism.
+ * Feedable 接口表示可以被喂食的对象。
  */
 public interface Feedable {
     /**
-     * Describes how the animal should be fed.
-     *
-     * @return feeding instructions
+     * Performs feeding behavior.
+     * 执行喂食行为。
      */
-    String feed();
+    void feed();
 }

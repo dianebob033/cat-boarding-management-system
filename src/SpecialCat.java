@@ -1,56 +1,41 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
  * Lead Author(s): Jiaqi Zhang
  * 
  * Responsibilities of class:
  * The SpecialCat class represents a cat with special care needs.
  * 
- * This class demonstrates inheritance because SpecialCat IS-A Cat.
+ * 中文说明：
+ * SpecialCat 是 Cat 的子类，用来表示需要特殊护理的猫咪。
  */
 public class SpecialCat extends Cat {
     private String medicalNote;
 
-    /**
-     * Creates a SpecialCat object.
-     *
-     * @param name the cat's name
-     * @param age the cat's age
-     * @param owner the cat's owner
-     * @param careNotes general care notes
-     * @param medicalNote medical or special care notes
-     */
-    public SpecialCat(String name, int age, Owner owner, String careNotes, String medicalNote) {
-        super(name, age, owner, careNotes);
-        this.medicalNote = medicalNote;
+    public SpecialCat(String name, LocalDate birthDate, Owner owner, String careNotes,
+            LocalDate startDate, LocalDate endDate,
+            LocalTime dropOffTime, LocalTime pickUpTime,
+            String medicalNote) {
+    	super(name, birthDate, owner, careNotes, startDate, endDate, dropOffTime, pickUpTime);
+    	this.medicalNote = medicalNote;
     }
 
-    /**
-     * Gets the medical note.
-     *
-     * @return medical note
-     */
-    public String getMedicalNote() {
-        return medicalNote;
-    }
-
-    /**
-     * Returns special feeding instructions.
-     *
-     * This method overrides the feed method from Cat.
-     *
-     * @return special feeding instruction String
-     */
     @Override
-    public String feed() {
+    public String getCategory() {
+        if (getBoardingDays() >= 14) {
+            return "Special Care + Long Stay Cat";
+        }
+        return "Special Care Cat";
+    }
+
+    @Override
+    public void feed() {
+        System.out.println(getName() + " needs special feeding instructions: " + medicalNote);
+    }
+
+    @Override
+    public String getFeedMessage() {
         return getName() + " needs special feeding instructions: " + medicalNote;
-    }
-
-    /**
-     * Returns special cat information as a String.
-     *
-     * @return special cat information
-     */
-    @Override
-    public String toString() {
-        return super.toString() + " | Medical Note: " + medicalNote;
     }
 }

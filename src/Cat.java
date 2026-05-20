@@ -1,89 +1,76 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+
 /**
  * Lead Author(s): Jiaqi Zhang
  * 
  * Responsibilities of class:
  * The Cat class stores basic information about a cat.
- * 
- * This class demonstrates aggregation because a Cat HAS-A Owner.
- * This class also implements the Feedable interface.
  */
 public class Cat implements Feedable {
     private String name;
-    private int age;
-    private Owner owner;      // Aggregation: Cat HAS-A Owner
+    private LocalDate birthDate;
+    private Owner owner;
     private String careNotes;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalTime dropOffTime;
+    private LocalTime pickUpTime;
 
-    /**
-     * Creates a Cat object.
-     *
-     * @param name the cat's name
-     * @param age the cat's age
-     * @param owner the cat's owner
-     * @param careNotes care notes for the cat
-     */
-    public Cat(String name, int age, Owner owner, String careNotes) {
+    public Cat(String name, LocalDate birthDate, Owner owner, String careNotes,
+               LocalDate startDate, LocalDate endDate,
+               LocalTime dropOffTime, LocalTime pickUpTime) {
         this.name = name;
-        this.age = age;
+        this.birthDate = birthDate;
         this.owner = owner;
         this.careNotes = careNotes;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.dropOffTime = dropOffTime;
+        this.pickUpTime = pickUpTime;
     }
 
-    /**
-     * Gets the cat's name.
-     *
-     * @return cat name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Gets the cat's age.
-     *
-     * @return cat age
-     */
+    public long getBoardingDays() {
+        return ChronoUnit.DAYS.between(startDate, endDate) + 1;
+    }
+
+    public String getCategory() {
+        if (getBoardingDays() >= 14) {
+            return "Long Stay Cat";
+        }
+        return "Regular Cat";
+    }
+
     public int getAge() {
-        return age;
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    /**
-     * Gets the cat's owner.
-     *
-     * @return owner object
-     */
-    public Owner getOwner() {
-        return owner;
-    }
-
-    /**
-     * Gets the care notes.
-     *
-     * @return care notes
-     */
-    public String getCareNotes() {
-        return careNotes;
-    }
-
-    /**
-     * Returns basic feeding instructions.
-     *
-     * @return feeding instruction String
-     */
     @Override
-    public String feed() {
+    public void feed() {
+        System.out.println(name + " should be fed according to the regular care notes.");
+    }
+
+    public String getFeedMessage() {
         return name + " should be fed according to the regular care notes.";
     }
 
-    /**
-     * Returns cat information as a String.
-     *
-     * @return cat information
-     */
     @Override
     public String toString() {
-        return name 
-                + " | Age: " + age 
-                + " | Owner: " + owner 
+        return name
+                + " | Age: " + getAge()
+                + " | Birth Date: " + birthDate
+                + " | Owner: " + owner
+                + " | Dates: " + startDate + " to " + endDate
+                + " | Drop-off: " + dropOffTime
+                + " | Pick-up: " + pickUpTime
+                + " | Days: " + getBoardingDays()
+                + " | Category: " + getCategory()
                 + " | Notes: " + careNotes;
     }
 }
