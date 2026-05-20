@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 /**
  * Lead Author(s): Jiaqi Zhang
@@ -62,7 +63,7 @@ public class CatBoardingGUI extends JFrame
 		setContentPane(new BackgroundPanel());
 		// BorderLayout helps separate the title, main form, and output area.
 		getContentPane().setLayout(new BorderLayout(15, 15));
-		
+
 		try
 		{
 			// I use Nimbus because the default Java Swing style looks old.
@@ -402,6 +403,17 @@ public class CatBoardingGUI extends JFrame
 				return;
 			}
 
+			// Remove dashes and spaces before checking the phone number.
+			// This lets the user type 6195552188, 619-555-2188, or 619 555 2188.
+			String cleanPhone = phone.replace("-", "").replace(" ", "");
+			
+			if (!cleanPhone.matches("\\d{10}"))
+			{
+				outputArea
+						.setText("Error: Phone number must contain 10 digits.");
+				return;
+			}
+
 			// End date should not happen before the start date.
 			if (endDate.isBefore(startDate))
 			{
@@ -410,7 +422,7 @@ public class CatBoardingGUI extends JFrame
 				return;
 			}
 
-			Owner owner = new Owner(ownerName, phone);
+			Owner owner = new Owner(ownerName, cleanPhone);
 			Cat cat;
 
 			// Regular cats are created when there are no medical notes.
@@ -441,11 +453,16 @@ public class CatBoardingGUI extends JFrame
 
 		}
 		// Invalid date or time input should not crash the GUI.
-		catch (Exception e)
+		catch (DateTimeParseException e)
 		{
 
 			outputArea.setText("Error: Please check the date or time format.\n"
-					+ "Date format: yyyy-mm-dd\n" + "Time format: HH:mm");
+					+ "Date format: yyyy-mm-dd\n"
+					+ "Time format: HH:mm");
+		}
+		catch (Exception e)
+		{
+			outputArea.setText("Error: Something went wrong when adding the cat.");
 		}
 	}
 
@@ -487,18 +504,9 @@ public class CatBoardingGUI extends JFrame
 			name = nameField.getText().trim();
 		}
 
-		// The recursive search method is used here to demonstrate LO9.
-		Cat foundCat = bm.recursiveSearchByName(name);
-
-		if (foundCat != null)
-		{
-			outputArea.setText(foundCat.toString() + "\nFeeding: "
-					+ foundCat.getFeedMessage());
-		}
-		else
-		{
-			outputArea.setText("Cat not found.");
-		}
+		// Search all matching cats instead of only the first match.
+		// This makes partial search more useful.
+		outputArea.setText(bm.searchAllCatsByName(name));
 	}
 
 	/**

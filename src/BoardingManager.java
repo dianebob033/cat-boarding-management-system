@@ -123,7 +123,10 @@ public class BoardingManager
 		}
 
 		// base case: found
-		if (catList.get(index).getName().equalsIgnoreCase(name))
+		// this one makes partial match search easier for users.
+		// For example, searching "Lu" can still find "Luna".
+		if (catList.get(index).getName().toLowerCase()
+				.contains(name.toLowerCase()))
 		{
 			return catList.get(index);
 		}
@@ -144,7 +147,6 @@ public class BoardingManager
 
 	/**
 	 * Searches for a cat by name.
-	 * 根据名字查询猫。
 	 *
 	 * @param name the cat name to search for
 	 * @return cat information if found, or a not found message
@@ -166,10 +168,43 @@ public class BoardingManager
 
 		return "Cat not found.";
 	}
+	
+	/**
+	 * Searches for all cats whose names contain the search text.
+	 * This is useful when more than one cat partially matches the input.
+	 * 
+	 * @param name the search text
+	 * @return all matching cats as a String
+	 */
+	public String searchAllCatsByName(String name)
+	{
+		if (name == null || name.trim().isEmpty())
+		{
+			return "Error: Please enter a cat name to search.";
+		}
+		
+		String result = "";
+		
+		for (Cat cat : catList)
+		{
+			if (cat.getName().toLowerCase()
+					.contains(name.toLowerCase()))
+			{
+				result += cat.toString() + "\n";
+				result += "Feeding: " + cat.getFeedMessage() + "\n\n";
+			}
+		}
+		
+		if (result.isEmpty())
+		{
+			return "Cat not found.";
+		}
+		
+		return result;
+	}
 
 	/**
 	 * Gets cats by category. (long stay vs regular)
-	 * 根据自动分类查询猫。
 	 *
 	 * @param category the category keyword
 	 * @return cats that match the category
@@ -261,8 +296,7 @@ public class BoardingManager
 
 			for (Cat cat : catList)
 			{
-				backupWriter.write(cat.toString() + "\n");
-				backupWriter.write("Feeding: " + cat.getFeedMessage() + "\n\n");
+				backupWriter.write(cat.toFileString() + "\n");
 			}
 
 			backupWriter.close();
@@ -297,41 +331,60 @@ public class BoardingManager
 			// Clear old list first so loading does not duplicate cats.
 			Scanner scanner = new Scanner(file);
 
+			// clear the old list first so loading does not duplicate cats.
+			catList.clear();
+
 			while (scanner.hasNextLine())
 			{
 				String line = scanner.nextLine();
-				String[] parts = line.split("\\|");
 
-				if (parts.length >= 10)
+				// we can skip old saved text or empty lines.
+				// prevents old file format from crashing the program.
+				if (line.trim().isEmpty() || (!line.startsWith("REGULAR|")
+						&& !line.startsWith("SPECIAL|")))
 				{
-					String type = parts[0];
-					String name = parts[1];
-					LocalDate birthDate = LocalDate.parse(parts[2]);
-					Owner owner = new Owner(parts[3], parts[4]);
-					String careNotes = parts[5];
-					LocalDate startDate = LocalDate.parse(parts[6]);
-					LocalDate endDate = LocalDate.parse(parts[7]);
-					LocalTime dropOffTime = LocalTime.parse(parts[8]);
-					LocalTime pickUpTime = LocalTime.parse(parts[9]);
+					continue;
+				}
 
-					Cat cat;
-
-					if (type.equals("SPECIAL") && parts.length >= 11)
+				String[] parts = line.split("\\|");
+				try
+				{
+					if (parts.length >= 10)
 					{
-						String medicalNote = parts[10];
+						String type = parts[0];
+						String name = parts[1];
+						LocalDate birthDate = LocalDate.parse(parts[2]);
+						Owner owner = new Owner(parts[3], parts[4]);
+						String careNotes = parts[5];
+						LocalDate startDate = LocalDate.parse(parts[6]);
+						LocalDate endDate = LocalDate.parse(parts[7]);
+						LocalTime dropOffTime = LocalTime.parse(parts[8]);
+						LocalTime pickUpTime = LocalTime.parse(parts[9]);
 
-						cat = new SpecialCat(name, birthDate, owner, careNotes,
-								startDate, endDate, dropOffTime, pickUpTime,
-								medicalNote);
+						Cat cat;
+
+						if (type.equals("SPECIAL") && parts.length >= 11)
+						{
+							String medicalNote = parts[10];
+
+							cat = new SpecialCat(name, birthDate, owner,
+									careNotes, startDate, endDate, dropOffTime,
+									pickUpTime, medicalNote);
+						}
+						else
+						{
+							cat = new Cat(name, birthDate, owner, careNotes,
+									startDate, endDate, dropOffTime,
+									pickUpTime);
+						}
+
+						addCat(cat);
+
 					}
-					else
-					{
-						cat = new Cat(name, birthDate, owner, careNotes,
-								startDate, endDate, dropOffTime, pickUpTime);
-					}
-
-					addCat(cat);
-
+				}
+				catch (Exception e)
+				{
+					continue;
 				}
 			}
 
