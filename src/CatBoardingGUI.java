@@ -91,15 +91,15 @@ public class CatBoardingGUI extends JFrame
 	{
 		JLabel titleLabel = new JLabel("Cat Boarding Management System",
 				SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+		titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		titleLabel.setForeground(new Color(45, 55, 72));
-		titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
+		titleLabel.setBorder(BorderFactory.createEmptyBorder(55, 10, 0, 10));
 
 		JLabel subtitleLabel = new JLabel(
 				"Manage boarding cats, care notes, dates, and categories",
 				SwingConstants.CENTER);
-		subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-		subtitleLabel.setForeground(new Color(100, 116, 139));
+		subtitleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		subtitleLabel.setForeground(new Color(110, 116, 139));
 
 		JPanel titlePanel = new JPanel(new GridLayout(2, 1));
 		titlePanel.setOpaque(false);
@@ -188,10 +188,10 @@ public class CatBoardingGUI extends JFrame
 			String labelText, JTextField field)
 	{
 		JLabel label = new JLabel(labelText);
-		label.setFont(new Font("Arial", Font.BOLD, 13));
+		label.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		label.setForeground(new Color(51, 65, 85));
 
-		field.setFont(new Font("Arial", Font.PLAIN, 13));
+		field.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 		field.setPreferredSize(new Dimension(230, 32));
 
 		// GridBagLayout allows labels and fields to stay aligned neatly.
@@ -245,7 +245,7 @@ public class CatBoardingGUI extends JFrame
 	private JButton createStyledButton(String text)
 	{
 		JButton button = new JButton(text);
-		button.setFont(new Font("Arial", Font.BOLD, 13));
+		button.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		button.setPreferredSize(new Dimension(140, 38));
 		button.setFocusPainted(false);
 		return button;

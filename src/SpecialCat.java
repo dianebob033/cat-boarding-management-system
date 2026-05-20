@@ -56,4 +56,30 @@ public class SpecialCat extends Cat
 		return getName() + " needs special feeding instructions: "
 				+ medicalNote;
 	}
+
+	/**
+	 * Gets the medical note for the special-care cat.
+	 * 
+	 * @return medical note
+	 */
+	public String getMedicalNote()
+	{
+		return medicalNote;
+	}
+
+	/**
+	 * Creates one line of text for saving this special cat to a file.
+	 * This format helps rebuild the object later when loading the file.
+	 * 
+	 * @return file-friendly special cat information
+	 */
+	@Override
+	public String toFileString()
+	{
+		return "SPECIAL|" + getName() + "|" + getBirthDate() + "|"
+				+ getOwner().getName() + "|" + getOwner().getPhoneNumber() + "|"
+				+ getCareNotes() + "|" + getStartDate() + "|" + getEndDate()
+				+ "|" + getDropOffTime() + "|" + getPickUpTime() + "|"
+				+ medicalNote;
+	}
 }

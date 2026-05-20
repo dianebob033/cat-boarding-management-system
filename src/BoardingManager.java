@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -229,8 +231,7 @@ public class BoardingManager
 
 			for (Cat cat : catList)
 			{
-				writer.write(cat.toString() + "\n");
-				writer.write("Feeding: " + cat.getFeedMessage() + "\n\n");
+				writer.write(cat.toFileString() + "\n");
 			}
 
 			writer.close();
@@ -293,14 +294,50 @@ public class BoardingManager
 				return "Error: File does not exist or cannot be read.";
 			}
 
+			// Clear old list first so loading does not duplicate cats.
 			Scanner scanner = new Scanner(file);
 
 			while (scanner.hasNextLine())
 			{
-				result += scanner.nextLine() + "\n";
+				String line = scanner.nextLine();
+				String[] parts = line.split("\\|");
+
+				if (parts.length >= 10)
+				{
+					String type = parts[0];
+					String name = parts[1];
+					LocalDate birthDate = LocalDate.parse(parts[2]);
+					Owner owner = new Owner(parts[3], parts[4]);
+					String careNotes = parts[5];
+					LocalDate startDate = LocalDate.parse(parts[6]);
+					LocalDate endDate = LocalDate.parse(parts[7]);
+					LocalTime dropOffTime = LocalTime.parse(parts[8]);
+					LocalTime pickUpTime = LocalTime.parse(parts[9]);
+
+					Cat cat;
+
+					if (type.equals("SPECIAL") && parts.length >= 11)
+					{
+						String medicalNote = parts[10];
+
+						cat = new SpecialCat(name, birthDate, owner, careNotes,
+								startDate, endDate, dropOffTime, pickUpTime,
+								medicalNote);
+					}
+					else
+					{
+						cat = new Cat(name, birthDate, owner, careNotes,
+								startDate, endDate, dropOffTime, pickUpTime);
+					}
+
+					addCat(cat);
+
+				}
 			}
 
 			scanner.close();
+
+			result = getAllCatsAsString();
 		}
 		catch (IOException e)
 		{

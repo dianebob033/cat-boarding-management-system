@@ -1,3 +1,9 @@
-timmy | Age: 4 | Birth Date: 2022-05-01 | Owner: seth (1231231234) | Dates: 2026-05-01 to 2026-05-07 | Drop-off: 10:00 | Pick-up: 17:00 | Days: 7 | Category: Special Care Cat | Notes: easy to care
-Feeding: timmy needs special feeding instructions: N/A
+Mimi | Age: 4 | Birth Date: 2022-04-15 | Owner: Emma Chen (619-555-2188) | Dates: 2026-05-20 to 2026-05-25 | Drop-off: 09:30 | Pick-up: 17:00 | Days: 6 | Category: Regular Cat | Notes: Friendly and likes feather toys
+Feeding: Mimi should be fed according to the regular care notes.
+
+Luna | Age: 4 | Birth Date: 2021-08-09 | Owner: Sophia Lee (760-888-9123) | Dates: 2026-05-18 to 2026-05-25 | Drop-off: 11:00 | Pick-up: 16:00 | Days: 8 | Category: Special Care Cat | Notes: Needs a quiet room and soft blanket
+Feeding: Luna needs special feeding instructions: Give medicine every night after dinner
+
+Coco | Age: 7 | Birth Date: 2019-02-11 | Owner: Kevin Park (949-333-2288) | Dates: 2026-07-01 to 2026-07-20 | Drop-off: 08:30 | Pick-up: 18:00 | Days: 20 | Category: Special Care + Long Stay Cat | Notes: Very active and likes climbing
+Feeding: Coco needs special feeding instructions: Needs eye medication twice daily
 

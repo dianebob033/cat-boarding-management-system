@@ -41,13 +41,12 @@ public class Cat implements Feedable
 	// A Cat has-a drop-off time.
 	private LocalTime dropOffTime;
 
-	// A Cat has-a drop-up time.
+	// A Cat has-a pick-up time.
 	private LocalTime pickUpTime;
 
 	/**
 	 * Creates a Cat object with boarding information.
-	 * 
-	 * Purpose:
+	 * This constructor is used for regular cats without medical notes.
 	 * 
 	 * @param name
 	 * @param birthDate
@@ -81,6 +80,76 @@ public class Cat implements Feedable
 	public String getName()
 	{
 		return name;
+	}
+
+	/**
+	 * Gets the cat's birth date.
+	 * 
+	 * @return the birth date
+	 */
+	public LocalDate getBirthDate()
+	{
+		return birthDate;
+	}
+
+	/**
+	 * Gets the Owner object for this cat.
+	 * 
+	 * @return the Owner object
+	 */
+	public Owner getOwner()
+	{
+		return owner;
+	}
+
+	/**
+	 * Gets the care notes.
+	 * 
+	 * @return care notes
+	 */
+	public String getCareNotes()
+	{
+		return careNotes;
+	}
+
+	/**
+	 * Gets the boarding start date.
+	 * 
+	 * @return start date
+	 */
+	public LocalDate getStartDate()
+	{
+		return startDate;
+	}
+
+	/**
+	 * Gets the boarding end date.
+	 * 
+	 * @return end date
+	 */
+	public LocalDate getEndDate()
+	{
+		return endDate;
+	}
+
+	/**
+	 * Gets the drop-off time.
+	 * 
+	 * @return drop-off time
+	 */
+	public LocalTime getDropOffTime()
+	{
+		return dropOffTime;
+	}
+
+	/**
+	 * Gets the pick-up time.
+	 * 
+	 * @return pick-up time
+	 */
+	public LocalTime getPickUpTime()
+	{
+		return pickUpTime;
 	}
 
 	/**
@@ -147,6 +216,19 @@ public class Cat implements Feedable
 	public String getFeedMessage()
 	{
 		return name + " should be fed according to the regular care notes.";
+	}
+
+	/**
+	 * Creates one line of text for saving this cat to a file.
+	 * this format is easier to load back into Cat objects later.
+	 * 
+	 * @return file-friendly cat information
+	 */
+	public String toFileString()
+	{
+		return "REGULAR|" + name + "|" + birthDate + "|" + owner.getName() + "|"
+				+ owner.getPhoneNumber() + "|" + careNotes + "|" + startDate
+				+ "|" + endDate + "|" + dropOffTime + "|" + pickUpTime;
 	}
 
 	@Override
