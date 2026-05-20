@@ -1,4 +1,2 @@
-REGULAR|Mimi|2022-04-15|Emma Chen|619-555-2188|Friendly and likes feather toys|2026-05-20|2026-05-25|09:30|17:00
-SPECIAL|Luna|2021-08-09|Sophia Lee|760-888-9123|Needs a quiet room and soft blanket|2026-05-18|2026-05-25|11:00|16:00|Give medicine every night after dinner
-SPECIAL|Coco|2019-02-11|Kevin Park|949-333-2288|Very active and likes climbing|2026-07-01|2026-07-20|08:30|18:00|Needs eye medication twice daily
-SPECIAL|Nala|2020-09-18|Rachel Green|8584449271|Very gentle but nervous in a new place|2026-07-03|2026-07-22|13:30|10:00|Needs medicine with wet food every morning
+REGULAR|Mimi|2022-05-01|Lucy|123-456-7890|Shy at first.|2026-05-01|2026-05-07|10:00|17:00
+SPECIAL|Luna|2021-03-02|Kevin|555-222-3333|Needs quiet space.|2026-05-01|2026-05-20|09:00|18:00|Give medicine at night.

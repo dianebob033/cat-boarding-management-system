@@ -92,13 +92,15 @@ public class CatBoardingGUI extends JFrame
 	{
 		JLabel titleLabel = new JLabel("Cat Boarding Management System",
 				SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 30));
+		titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 35));
 		titleLabel.setForeground(new Color(45, 55, 72));
-		titleLabel.setBorder(BorderFactory.createEmptyBorder(55, 10, 0, 10));
+		titleLabel.setBorder(BorderFactory.createEmptyBorder(40, 10, 0, 10));
 
 		JLabel subtitleLabel = new JLabel(
 				"Manage boarding cats, care notes, dates, and categories",
 				SwingConstants.CENTER);
+		subtitleLabel
+				.setBorder(BorderFactory.createEmptyBorder(-50, 0, -40, 0));
 		subtitleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		subtitleLabel.setForeground(new Color(110, 116, 139));
 
@@ -404,9 +406,10 @@ public class CatBoardingGUI extends JFrame
 			}
 
 			// Remove dashes and spaces before checking the phone number.
-			// This lets the user type 6195552188, 619-555-2188, or 619 555 2188.
+			// This lets the user type 6195552188, 619-555-2188, or 619 555
+			// 2188.
 			String cleanPhone = phone.replace("-", "").replace(" ", "");
-			
+
 			if (!cleanPhone.matches("\\d{10}"))
 			{
 				outputArea
@@ -457,12 +460,12 @@ public class CatBoardingGUI extends JFrame
 		{
 
 			outputArea.setText("Error: Please check the date or time format.\n"
-					+ "Date format: yyyy-mm-dd\n"
-					+ "Time format: HH:mm");
+					+ "Date format: yyyy-mm-dd\n" + "Time format: HH:mm");
 		}
 		catch (Exception e)
 		{
-			outputArea.setText("Error: Something went wrong when adding the cat.");
+			outputArea.setText(
+					"Error: Something went wrong when adding the cat.");
 		}
 	}
 
@@ -543,6 +546,8 @@ public class CatBoardingGUI extends JFrame
 
 		String text = smartImportArea.getText();
 
+		// check if the user pasted anything (or just spaces)
+		// if nothing is there, show an error and stop
 		if (text.trim().isEmpty())
 		{
 			outputArea.setText("Error: Please paste cat information first.");
@@ -567,6 +572,9 @@ public class CatBoardingGUI extends JFrame
 		ownerField.setText(ownerName);
 		phoneField.setText(phone);
 
+		// only set the date field if we actually found a date
+		// if the parser returned an empty string, leave the field alone
+		// this prevents overwriting existing data with nothing
 		if (!birthDate.isEmpty())
 		{
 			birthDateField.setText(birthDate);
@@ -582,6 +590,7 @@ public class CatBoardingGUI extends JFrame
 			endDateField.setText(endDate);
 		}
 
+		// same check for times – only update if we found something
 		if (!dropOffTime.isEmpty())
 		{
 			dropOffTimeField.setText(dropOffTime);
@@ -595,6 +604,8 @@ public class CatBoardingGUI extends JFrame
 		careNotesField.setText(careNotes);
 		medicalNotesField.setText(medicalNotes);
 
+		// Tell the user the operation finished successfully
+		// remind them to review the fields before clicking Add Cat
 		outputArea.setText("Smart Fill completed.\n"
 				+ "Please review the fields and click Add Cat.");
 	}

@@ -168,7 +168,7 @@ public class BoardingManager
 
 		return "Cat not found.";
 	}
-	
+
 	/**
 	 * Searches for all cats whose names contain the search text.
 	 * This is useful when more than one cat partially matches the input.
@@ -182,24 +182,23 @@ public class BoardingManager
 		{
 			return "Error: Please enter a cat name to search.";
 		}
-		
+
 		String result = "";
-		
+
 		for (Cat cat : catList)
 		{
-			if (cat.getName().toLowerCase()
-					.contains(name.toLowerCase()))
+			if (cat.getName().toLowerCase().contains(name.toLowerCase()))
 			{
 				result += cat.toString() + "\n";
 				result += "Feeding: " + cat.getFeedMessage() + "\n\n";
 			}
 		}
-		
+
 		if (result.isEmpty())
 		{
 			return "Cat not found.";
 		}
-		
+
 		return result;
 	}
 
@@ -349,6 +348,8 @@ public class BoardingManager
 				String[] parts = line.split("\\|");
 				try
 				{
+					// make sure we have at least 10 pieces of data
+					// if not, something is wrong with this line, so skip it
 					if (parts.length >= 10)
 					{
 						String type = parts[0];
@@ -363,6 +364,9 @@ public class BoardingManager
 
 						Cat cat;
 
+						// if the cat is SPECIAL and we have at least 11 pieces
+						// of data
+						// the 11th piece (index 10) is the medical note
 						if (type.equals("SPECIAL") && parts.length >= 11)
 						{
 							String medicalNote = parts[10];
@@ -384,6 +388,8 @@ public class BoardingManager
 				}
 				catch (Exception e)
 				{
+					// If any line has bad data (wrong date format, etc.),
+					// skip it and keep going. The rest of the file still loads.
 					continue;
 				}
 			}
