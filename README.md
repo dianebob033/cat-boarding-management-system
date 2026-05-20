@@ -1,153 +1,136 @@
+# Cat Boarding Management System
+
 ## Overview
 
-The Smart Cat Boarding Management System is a Java Swing application designed to help manage cat boarding information through a graphical user interface.
+This is my CISC 191 final project. I made a Java Swing program for managing cat boarding information. I chose this topic because it connects to my real interest in cat boarding, so it was easier for me to think about useful features.
 
-The project demonstrates object-oriented programming concepts including inheritance, interfaces, collections, arrays, recursion, exception handling, and file I/O.
+The program can add cats, remove cats, search for cats, save and load data from a text file, and display results in a GUI. Later in the project, I also added Smart Fill, automatic category classification, a simple boarding calendar, backup saving, and recursive search.
 
-# Features
+## Features
 
-- Add cats
-- Remove cats
-- Search cats
-- Smart Fill automatic parser
+- Add, remove, and search cats
+- Store owner and care information
+- Smart Fill from pasted text
 - Automatic category classification
-- Recursive search
-- File save/load
-- Automatic backup file
-- Boarding calendar using 2D arrays
-- GUI event handling
+- File save and load
+- Backup file saving
+- Simple boarding calendar using a 2D array
+- Recursive search by cat name
+- Java Swing GUI with buttons, text fields, and output area
 
-  # Technologies Used
+## Technologies and Concepts Used
 
 - Java
 - Java Swing
+- Object-oriented design
 - ArrayList
-- Multidimensional Arrays
+- Two-dimensional array
 - Recursion
-- File I/O
-- Exception Handling
+- Exception handling
+- Text file I/O
 
----
-
-## References
-
-- Oracle Java Documentation:
-https://docs.oracle.com/javase/8/docs/api/
-
-- Morelli, R., & Walde, R. (2016).
-Java, Java, Java: Object-Oriented Problem Solving.
-https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
-# LO Coverage
+## LO Coverage
 
 ### LO1 - Object-Oriented Design
-This project uses separate classes with clear responsibilities:
-- Cat stores cat boarding information.
-- Owner stores owner contact information.
-- BoardingManager manages the cat list, calendar, search, save, and load.
-- CatBoardingGUI handles the user interface.
-- SmartCatParser handles automatic text parsing.
+
+I separated the project into different classes with different jobs. For example, `Cat` stores cat information, `Owner` stores owner contact information, `BoardingManager` manages the data, `CatBoardingGUI` handles the GUI, and `SmartCatParser` handles the Smart Fill text parsing.
 
 ### LO2 - Arrays and Multidimensional Arrays
-BoardingManager uses a 2D String array:
+
+I used a two-dimensional array in `BoardingManager` as a simple boarding calendar.
+
+Examples:
 - `private String[][] boardingCalendar;`
 - `assignCatToCalendar(String catName, int day, int room)`
 
 ### LO3 - Classes and Aggregation
-Cat has-a Owner:
+
+The project uses several classes and object relationships. A `Cat` has an `Owner`, so this shows aggregation.
+
+Example:
 - `private Owner owner;`
 
 ### LO4 - Inheritance, Interfaces, and Polymorphism
-- Cat implements Feedable.
-- SpecialCat extends Cat.
-- SpecialCat overrides `getCategory()`, `feed()`, and `getFeedMessage()`.
-- SpecialCat objects can also be stored as Cat objects in `ArrayList<Cat>`.
+
+`SpecialCat` extends `Cat`, and `Cat` implements the `Feedable` interface. `SpecialCat` overrides methods such as `getCategory()`, `feed()`, and `getFeedMessage()`.
+
+This also allows a `SpecialCat` object to be stored as a `Cat` object in an `ArrayList<Cat>`.
 
 ### LO5 - Generic Collections
-BoardingManager uses:
+
+`BoardingManager` uses an `ArrayList<Cat>` to store all cats in the system.
+
+Example:
 - `private ArrayList<Cat> catList;`
 
 ### LO6 - GUI and Event-Driven Programming
-CatBoardingGUI uses Swing components:
-- JFrame, JPanel, JLabel, JTextField, JTextArea, JButton
-- Button ActionListeners call methods such as `handleAddCat()`, `handleSearchCat()`, `handleSave()`, and `handleLoad()`.
+
+The GUI uses Java Swing components such as `JFrame`, `JPanel`, `JLabel`, `JTextField`, `JTextArea`, and `JButton`.
+
+The buttons use `ActionListener` objects to respond to user actions. For example, the Add Cat button calls `handleAddCat()`, and the Search Cat button calls `handleSearchCat()`.
 
 ### LO7 - Exception Handling
-- The GUI catches invalid date/time input in `handleAddCat()`.
-- BoardingManager catches IOException in `saveToFile()` and `loadFromFile()`.
+
+The program uses exception handling for invalid input and file problems. For example, `handleAddCat()` catches invalid date or time input, and `BoardingManager` catches `IOException` when saving or loading files.
 
 ### LO8 - Text File I/O
-BoardingManager uses:
-- FileWriter in `saveToFile()`
-- Scanner in `loadFromFile()`
-- Automatic backup in `saveBackupFile()`
+
+`BoardingManager` saves and loads cat information using text files.
+
+Examples:
+- `FileWriter` in `saveToFile()`
+- `Scanner` in `loadFromFile()`
+- backup file in `saveBackupFile()`
 
 ### LO9 - Recursion
-BoardingManager uses recursive search:
+
+`BoardingManager` uses recursion to search for a cat by name.
+
+Examples:
 - `recursiveSearchByName(String name)`
-- Private helper `recursiveSearchByName(String name, int index)`
+- helper method `recursiveSearchByName(String name, int index)`
 
-Note: I worked on this project locally in Eclipse, but I did not correctly submit weekly Canvas snapshots or push weekly GitHub commits. This section summarizes the development stages of my project.
-# Weekly Development Progress
+## Weekly Development Progress
 
-## Week 1 — Proposal and Design
+### Week 1 - Proposal and Design
 
-This week, I planned the main idea for my project. I chose a cat boarding management system because it connects to a real situation and gives me a clear reason to build the program.
+I planned the main idea for the project and chose a cat boarding management system. I created the first GUI mock-up, CRC cards, and UML diagram. I also planned the main classes: `Cat`, `Owner`, `SpecialCat`, `BoardingManager`, `CatBoardingGUI`, and `Feedable`.
 
-I created the first version of the GUI mock-up, CRC cards, and UML diagram. I also planned the main classes, including Cat, Owner, SpecialCat, BoardingManager, CatBoardingGUI, and Feedable.
+### Week 2 - Basic Model Classes
 
+I started writing the model classes. I worked on `Owner`, `Cat`, and `SpecialCat` first because they store the main information for the program. I also tested constructors, getters, and `toString()` methods.
 
----
+### Week 3 - Manager Class and File Planning
 
-## Week 2 — Basic Model Classes
+I worked on the `BoardingManager` class and used an `ArrayList` to store multiple cat objects. I added methods to add, remove, and display cats. I also started planning where file saving and loading should go.
 
-This week, I started writing the model classes. I worked on Owner, Cat, and SpecialCat first because these classes store the main information for the system.
+### Week 4 - Testing and Debugging
 
-I also tested constructors, getter methods, and toString methods. At this stage, the program was still simple, but it helped me make sure the basic object relationships worked.
+I focused on testing the model classes and fixing logic problems. I checked whether cats could be added and removed correctly, and I reviewed the relationship between the classes.
 
+### Week 5 - GUI Layout
 
----
+I started building the Java Swing GUI. I added labels, text fields, buttons, and an output area. At this point, the GUI was mostly layout, but it helped me see how the user would interact with the program.
 
-## Week 3 — Manager Class and File Planning
+### Week 6 - Functional GUI
 
-This week, I worked on the BoardingManager class. I used an ArrayList to store multiple Cat objects and added methods to add, remove, and display cats.
+I connected the GUI buttons to the program logic. Add Cat, Remove Cat, Search Cat, Save File, and Load File became functional. I also added Smart Fill, which uses keyword matching and regular expressions to fill in cat information from pasted text.
 
-I also started planning file saving and loading. I had to think about where file I/O should belong in the design, and I decided to keep it in BoardingManager because that class manages the cat data.
+### Week 7 - Advanced Features and Final Testing
 
+I added recursive search and a two-dimensional array for a simple boarding calendar. I also added backup saving and continued testing the GUI. Most of this week was debugging small problems and making the project more stable.
 
----
+## References
 
-## Week 4 — Testing and Debugging
+- Morelli, R., & Walde, R. (2016). *Java, Java, Java: Object-Oriented Problem Solving*.  
+  https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
 
-This week, I focused on testing the model classes and fixing logic issues. I checked whether cats could be added and removed correctly, and I also reviewed the relationships between the classes.
+- Oracle Java Documentation.  
+  https://docs.oracle.com/javase/8/docs/api/
 
-I made small design changes after testing, especially around how the manager class should organize the cat list.
+## GitHub Repository
 
-
----
-
-## Week 5 — GUI Layout
-
-This week, I started building the GUI with Java Swing. I added labels, text fields, buttons, and an output area.
-
-At this point, the GUI was mostly about layout. The buttons did not do everything yet, but the visual structure helped me see how the user would interact with the program.
-
-
----
-
-## Week 6 — Functional GUI
-
-This week, I connected the GUI buttons to the program logic. The Add Cat, Remove Cat, Search Cat, Save File, and Load File buttons became functional.
-
-I also added Smart Fill, which uses keyword matching and regular expressions to fill in cat information from pasted text. This was one of the harder parts because the text input could vary.
-
-
----
-
-## Week 7 — Advanced Features and Final Testing
-
-This week, I added the final advanced features. I added recursive search for cats by name and a two-dimensional array to represent a simple boarding calendar.
-
-I also added automatic backup when saving files and continued testing the GUI. Most of the work this week was debugging small problems and making the project more stable.
+https://github.com/dianebob033/cat-boarding-management-system
 
 ------------------------------------------------
   # cat-boarding-management-system
