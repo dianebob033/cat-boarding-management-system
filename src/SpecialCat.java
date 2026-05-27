@@ -3,24 +3,39 @@ import java.time.LocalTime;
 
 /**
  * Lead Author(s): Jiaqi Zhang
- * 
+ *
  * References:
  * Morelli, R., & Walde, R. (2016). Java, Java, Java:
  * Object-Oriented Problem Solving.
- * Retrieved from:
  * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- * Oracle Java Documentation:
- * https://docs.oracle.com/javase/8/docs/api/
- * 
+ *
+ * Oracle Inheritance Tutorial:
+ * https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html
+ *
  * Responsibilities of class:
- * The SpecialCat class represents a cat with special care needs.
- * 
+ * SpecialCat represents a cat with extra medical or special-care needs.
  */
 public class SpecialCat extends Cat
 {
+	private static final long LONG_STAY_DAYS = 14;
+
+	// SpecialCat has-a medical note.
 	private String medicalNote;
 
+	/**
+	 * Creates a SpecialCat object with regular cat information and a medical
+	 * note.
+	 *
+	 * @param name        the cat's name
+	 * @param birthDate   the cat's birth date
+	 * @param owner       the owner of the cat
+	 * @param careNotes   regular care notes
+	 * @param startDate   boarding start date
+	 * @param endDate     boarding end date
+	 * @param dropOffTime drop-off time
+	 * @param pickUpTime  pick-up time
+	 * @param medicalNote medical note for special care
+	 */
 	public SpecialCat(String name, LocalDate birthDate, Owner owner,
 			String careNotes, LocalDate startDate, LocalDate endDate,
 			LocalTime dropOffTime, LocalTime pickUpTime, String medicalNote)
@@ -30,38 +45,47 @@ public class SpecialCat extends Cat
 		this.medicalNote = medicalNote;
 	}
 
+	/**
+	 * Gets the category for a special-care cat.
+	 *
+	 * @return special-care category
+	 */
 	@Override
 	public String getCategory()
 	{
-		// long stay + special care = both categories
-		if (getBoardingDays() >= 14)
+		String category = "Special Care Cat";
+
+		if (getBoardingDays() >= LONG_STAY_DAYS)
 		{
-			return "Special Care + Long Stay Cat";
+			category = "Special Care + Long Stay Cat";
 		}
-		return "Special Care Cat";
+
+		return category;
 	}
 
+	/**
+	 * Prints the feeding instructions.
+	 */
 	@Override
 	public void feed()
 	{
-		// just reuse getFeedMessage() to avoid writing the same string twice
 		System.out.println(getFeedMessage());
 	}
 
+	/**
+	 * Gets feeding instructions for a special-care cat.
+	 *
+	 * @return feeding message
+	 */
 	@Override
 	public String getFeedMessage()
 	{
-		// same as feed() but returns string instead of printing
-		// (interface requires this method)
+		// Polymorphism lets the GUI ask every Cat for a feeding message without
+		// checking which kind of cat it is.
 		return getName() + " needs special feeding instructions: "
 				+ medicalNote;
 	}
 
-	/**
-	 * Gets the medical note for the special-care cat.
-	 * 
-	 * @return medical note
-	 */
 	public String getMedicalNote()
 	{
 		return medicalNote;
@@ -69,8 +93,7 @@ public class SpecialCat extends Cat
 
 	/**
 	 * Creates one line of text for saving this special cat to a file.
-	 * This format helps rebuild the object later when loading the file.
-	 * 
+	 *
 	 * @return file-friendly special cat information
 	 */
 	@Override

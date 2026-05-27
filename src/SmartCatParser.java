@@ -7,251 +7,169 @@ import java.util.regex.Pattern;
  * References:
  * Morelli, R., & Walde, R. (2016). Java, Java, Java:
  * Object-Oriented Problem Solving.
- * Retrieved from:
  * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- * Oracle Java Documentation:
- * https://docs.oracle.com/javase/8/docs/api/
- * 
- * Responsibilities of class:
- * The SmartCatParser class tries to recognize cat boarding information
- * from a paragraph of text using simple keyword matching and regular
- * expressions.
  *
+ * Oracle Pattern Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+ *
+ * Oracle Matcher Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html
+ *
+ * Responsibilities of class:
+ * SmartCatParser reads pasted text and tries to find cat boarding fields.
  */
 public class SmartCatParser
 {
-
-	/**
-	 * Finds the cat name from text.
-	 *
-	 * @param text user pasted text
-	 * @return cat name or empty string
-	 */
 	public static String findCatName(String text)
 	{
 		return findAfterKeyword(text,
 				"(cat name is|cat named|name is|cat name:)");
 	}
 
-	/**
-	 * Finds owner name from text.
-	 *
-	 * @param text user pasted text
-	 * @return owner name or empty string
-	 */
 	public static String findOwnerName(String text)
 	{
 		return findAfterKeyword(text,
 				"(owner is|owner name is|owner:|owner name:)");
 	}
 
-	/**
-	 * Finds phone number from text.
-	 *
-	 * @param text user pasted text
-	 * @return phone number or empty string
-	 */
 	public static String findPhone(String text)
 	{
-		// Regex is useful here because phone numbers follow a clear pattern
+		String result = "";
+
+		// Regex helps because phone numbers have a regular shape even when the
+		// user types spaces or dashes.
 		Pattern pattern = Pattern.compile("\\d{3}[- ]?\\d{3}[- ]?\\d{4}");
-		Matcher matcher = pattern.matcher(text);
+		Matcher matcher = pattern.matcher(safeText(text));
 
 		if (matcher.find())
 		{
-			return matcher.group();
+			result = matcher.group();
 		}
 
-		return "";
+		return result;
 	}
 
-	/**
-	 * Finds the first date in yyyy-mm-dd format.
-	 *
-	 * @param text user pasted text
-	 * @return first date or empty string
-	 */
 	public static String findFirstDate(String text)
 	{
 		return findDateByIndex(text, 0);
 	}
 
-	/**
-	 * Finds the second date in yyyy-mm-dd format.
-	 *
-	 * @param text user pasted text
-	 * @return second date or empty string
-	 */
 	public static String findSecondDate(String text)
 	{
 		return findDateByIndex(text, 1);
 	}
 
-	/**
-	 * Finds the third date in yyyy-mm-dd format.
-	 *
-	 * @param text user pasted text
-	 * @return third date or empty string
-	 */
 	public static String findThirdDate(String text)
 	{
 		return findDateByIndex(text, 2);
 	}
 
-	/**
-	 * Finds the first time in HH:mm format.
-	 *
-	 * @param text user pasted text
-	 * @return first time or empty string
-	 */
 	public static String findFirstTime(String text)
 	{
 		return findTimeByIndex(text, 0);
 	}
 
-	/**
-	 * Finds the second time in HH:mm format.
-	 *
-	 * @param text user pasted text
-	 * @return second time or empty string
-	 */
 	public static String findSecondTime(String text)
 	{
 		return findTimeByIndex(text, 1);
 	}
 
-	/**
-	 * Finds care notes.
-	 *
-	 * @param text user pasted text
-	 * @return care notes or empty string
-	 */
 	public static String findCareNotes(String text)
 	{
-		String notes = findAfterKeyword(text,
+		return findAfterKeyword(text,
 				"(care notes:|notes:|care notes are|notes are)");
-
-		if (!notes.isEmpty())
-		{
-			return notes;
-		}
-
-		return "";
 	}
 
-	/**
-	 * Finds medical notes.
-	 *
-	 * @param text user pasted text
-	 * @return medical notes or empty string
-	 */
 	public static String findMedicalNotes(String text)
 	{
-		String medical = findAfterKeyword(text,
+		String medicalNote = findAfterKeyword(text,
 				"(medical notes:|medical note:|medicine:|medication:|medical notes are)");
 
-		if (!medical.isEmpty())
+		if (medicalNote.isEmpty()
+				&& safeText(text).toLowerCase().contains("medicine"))
 		{
-			return medical;
+			// This backup rule helps Smart Fill notice special-care cats even
+			// when the sentence is not perfectly labeled.
+			medicalNote = "Needs medication or medical attention.";
 		}
 
-		// If the exact medical note is not labeled, these words still tell me
-		// the cat may need special care.
-		if (text.toLowerCase().contains("medicine")
-				|| text.toLowerCase().contains("medication"))
-		{
-			return "Needs medication or medical attention.";
-		}
-
-		return "";
+		return medicalNote;
 	}
 
-	/**
-	 * Helper method to find text after a keyword.
-	 *
-	 * @param text         user pasted text
-	 * @param keywordRegex keyword pattern
-	 * @return recognized phrase
-	 */
 	private static String findAfterKeyword(String text, String keywordRegex)
 	{
-		// CASE_INSENSITIVE makes the parser more forgiving for user input.
+		String result = "";
+
+		// CASE_INSENSITIVE makes pasted text more forgiving for the user.
 		Pattern pattern = Pattern.compile(
 				keywordRegex + "\\s*([A-Za-z0-9 .'-]+)",
 				Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(text);
+		Matcher matcher = pattern.matcher(safeText(text));
 
 		if (matcher.find())
 		{
-			// TODO: should be group(1) but group(2) works? need to test
-			String result = matcher.group(2).trim();
+			result = matcher.group(2).trim();
 
-			// cut off at first period so we don't grab too much text
 			if (result.contains("."))
 			{
+				// Stopping at a period prevents one field from taking the whole
+				// paragraph.
 				result = result.substring(0, result.indexOf(".")).trim();
 			}
-
-			return result;
 		}
 
-		return "";
+		return result;
 	}
 
-	/**
-	 * Helper method to find date by order.
-	 *
-	 * @param text  user pasted text
-	 * @param index date order
-	 * @return date string
-	 */
 	private static String findDateByIndex(String text, int index)
 	{
-		// Dates are found by order because the pasted text usually has
-		// birth date, start date, and end date in that order.
+		String result = "";
 		Pattern pattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
-		Matcher matcher = pattern.matcher(text);
+		Matcher matcher = pattern.matcher(safeText(text));
+		int foundDates = 0;
 
-		int count = 0;
-
-		while (matcher.find())
+		while (matcher.find() && result.isEmpty())
 		{
-			if (count == index)
+			if (foundDates == index)
 			{
-				return matcher.group();
+				result = matcher.group();
 			}
-			count++;
+
+			foundDates++;
 		}
 
-		return "";
+		return result;
 	}
 
-	/**
-	 * Helper method to find time by order.
-	 *
-	 * @param text  user pasted text
-	 * @param index time order
-	 * @return time string
-	 */
 	private static String findTimeByIndex(String text, int index)
 	{
-		// Times are found by order because the first one is drop-off time
-		// and the second one is pick-up time.
+		String result = "";
 		Pattern pattern = Pattern.compile("\\d{1,2}:\\d{2}");
-		Matcher matcher = pattern.matcher(text);
+		Matcher matcher = pattern.matcher(safeText(text));
+		int foundTimes = 0;
 
-		int count = 0;
-
-		while (matcher.find())
+		while (matcher.find() && result.isEmpty())
 		{
-			if (count == index)
+			if (foundTimes == index)
 			{
-				return matcher.group();
+				result = matcher.group();
 			}
-			count++;
+
+			foundTimes++;
 		}
 
-		return "";
+		return result;
+	}
+
+	private static String safeText(String text)
+	{
+		String safeText = "";
+
+		if (text != null)
+		{
+			safeText = text;
+		}
+
+		return safeText;
 	}
 }

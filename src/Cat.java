@@ -5,57 +5,63 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * Lead Author(s): Jiaqi Zhang
- * 
+ *
  * References:
  * Morelli, R., & Walde, R. (2016). Java, Java, Java:
  * Object-Oriented Problem Solving.
- * Retrieved from:
  * https://open.umn.edu/opentextbooks/textbooks/java-java-java-object-oriented-problem-solving
- * 
- * Oracle Java Documentation:
- * https://docs.oracle.com/javase/8/docs/api/
- * 
+ *
+ * Oracle LocalDate Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html
+ *
+ * Oracle LocalTime Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html
+ *
+ * Oracle Period Documentation:
+ * https://docs.oracle.com/javase/8/docs/api/java/time/Period.html
+ *
  * Responsibilities of class:
- * The Cat class stores basic information about a cat.
+ * Cat stores the boarding information for one regular cat.
  */
 public class Cat implements Feedable
 {
-	// A Cat has-a name.
+	private static final long LONG_STAY_DAYS = 14;
+
+	// Cat has-a name.
 	private String name;
 
-	// A Cat has-a birth date.
+	// Cat has-a birth date.
 	private LocalDate birthDate;
 
-	// A Cat has-a Owner object (aggregation).
+	// Cat has-a Owner. This shows aggregation.
 	private Owner owner;
 
-	// A Cat has-a care note.
+	// Cat has-a care note.
 	private String careNotes;
 
-	// A Cat has-a boarding start date.
+	// Cat has-a boarding start date.
 	private LocalDate startDate;
 
-	// A Cat has-a boarding end date.
+	// Cat has-a boarding end date.
 	private LocalDate endDate;
 
-	// A Cat has-a drop-off time.
+	// Cat has-a drop-off time.
 	private LocalTime dropOffTime;
 
-	// A Cat has-a pick-up time.
+	// Cat has-a pick-up time.
 	private LocalTime pickUpTime;
 
 	/**
 	 * Creates a Cat object with boarding information.
-	 * This constructor is used for regular cats without medical notes.
-	 * 
-	 * @param name
-	 * @param birthDate
-	 * @param owner
-	 * @param careNotes
-	 * @param startDate
-	 * @param endDate
-	 * @param dropOffTime
-	 * @param pickUpTime
+	 *
+	 * @param name        the cat's name
+	 * @param birthDate   the cat's birth date
+	 * @param owner       the owner of the cat
+	 * @param careNotes   regular care notes
+	 * @param startDate   boarding start date
+	 * @param endDate     boarding end date
+	 * @param dropOffTime drop-off time
+	 * @param pickUpTime  pick-up time
 	 */
 	public Cat(String name, LocalDate birthDate, Owner owner, String careNotes,
 			LocalDate startDate, LocalDate endDate, LocalTime dropOffTime,
@@ -71,82 +77,41 @@ public class Cat implements Feedable
 		this.pickUpTime = pickUpTime;
 	}
 
-	/**
-	 * Gets the cat's name.
-	 * 
-	 * @return the cat's name.
-	 */
-
 	public String getName()
 	{
 		return name;
 	}
 
-	/**
-	 * Gets the cat's birth date.
-	 * 
-	 * @return the birth date
-	 */
 	public LocalDate getBirthDate()
 	{
 		return birthDate;
 	}
 
-	/**
-	 * Gets the Owner object for this cat.
-	 * 
-	 * @return the Owner object
-	 */
 	public Owner getOwner()
 	{
 		return owner;
 	}
 
-	/**
-	 * Gets the care notes.
-	 * 
-	 * @return care notes
-	 */
 	public String getCareNotes()
 	{
 		return careNotes;
 	}
 
-	/**
-	 * Gets the boarding start date.
-	 * 
-	 * @return start date
-	 */
 	public LocalDate getStartDate()
 	{
 		return startDate;
 	}
 
-	/**
-	 * Gets the boarding end date.
-	 * 
-	 * @return end date
-	 */
 	public LocalDate getEndDate()
 	{
 		return endDate;
 	}
 
-	/**
-	 * Gets the drop-off time.
-	 * 
-	 * @return drop-off time
-	 */
 	public LocalTime getDropOffTime()
 	{
 		return dropOffTime;
 	}
 
-	/**
-	 * Gets the pick-up time.
-	 * 
-	 * @return pick-up time
-	 */
 	public LocalTime getPickUpTime()
 	{
 		return pickUpTime;
@@ -157,10 +122,9 @@ public class Cat implements Feedable
 	 *
 	 * @return total boarding days
 	 */
-
 	public long getBoardingDays()
 	{
-		// +1 because boarding includes both start and end day
+		// Boarding includes both the first day and the last day.
 		return ChronoUnit.DAYS.between(startDate, endDate) + 1;
 	}
 
@@ -169,50 +133,44 @@ public class Cat implements Feedable
 	 *
 	 * @return the category of the cat
 	 */
-
 	public String getCategory()
 	{
-		// school requirement: need to separate long stay (>2 weeks) from
-		// regular
-		if (getBoardingDays() >= 14)
+		String category = "Regular Cat";
+
+		if (getBoardingDays() >= LONG_STAY_DAYS)
 		{
-			return "Long Stay Cat";
+			category = "Long Stay Cat";
 		}
-		return "Regular Cat";
+
+		return category;
 	}
 
 	/**
 	 * Calculates the age of the cat.
-	 * Using Period instead of manual calculation because it handles leap year
-	 * and month lengths automatically
-	 * 
+	 *
 	 * @return the cat's age in years
 	 */
 	public int getAge()
 	{
+		// Period understands real calendar dates, so it is safer than
+		// subtracting years by hand.
 		return Period.between(birthDate, LocalDate.now()).getYears();
 	}
 
 	/**
 	 * Prints feeding instructions for the cat.
 	 */
-
 	@Override
 	public void feed()
 	{
-		// just print to console for now, but in real app this would connect
-		// to feeding schedule system
-		System.out.println(
-				name + " should be fed according to the regular care notes.");
+		System.out.println(getFeedMessage());
 	}
 
 	/**
-	 * Returns all cat information as a String.
-	 * 
-	 * @return formatted cat information
+	 * Returns feeding instructions as a String.
+	 *
+	 * @return feeding message
 	 */
-	// this is duplicated from feed() but interface requires it
-	// could refactor later but fine for now
 	public String getFeedMessage()
 	{
 		return name + " should be fed according to the regular care notes.";
@@ -220,22 +178,26 @@ public class Cat implements Feedable
 
 	/**
 	 * Creates one line of text for saving this cat to a file.
-	 * this format is easier to load back into Cat objects later.
-	 * 
+	 *
 	 * @return file-friendly cat information
 	 */
 	public String toFileString()
 	{
+		// The pipe format is simple for this class project and still easy to
+		// rebuild into objects later.
 		return "REGULAR|" + name + "|" + birthDate + "|" + owner.getName() + "|"
 				+ owner.getPhoneNumber() + "|" + careNotes + "|" + startDate
 				+ "|" + endDate + "|" + dropOffTime + "|" + pickUpTime;
 	}
 
+	/**
+	 * Returns cat information for display.
+	 *
+	 * @return formatted cat information
+	 */
 	@Override
 	public String toString()
 	{
-		// Combine all cat information into one formatted String.
-		// keeping everything in one line so file output is easier to parse
 		return name + " | Age: " + getAge() + " | Birth Date: " + birthDate
 				+ " | Owner: " + owner + " | Dates: " + startDate + " to "
 				+ endDate + " | Drop-off: " + dropOffTime + " | Pick-up: "
